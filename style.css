@@ -1,0 +1,153 @@
+/* ── Override Gradio's CSS variable layer ─────────────────────────────── */
+:root {
+    --disco-blue:     #0f1f4b;
+    --disco-blue-mid: #1a2f6b;
+    --disco-red:      #b30000;
+
+    --background-fill-primary:   #0f1f4b !important;
+    --background-fill-secondary: #1a2f6b !important;
+    --block-background-fill:     #0f1f4b !important;
+    --panel-background-fill:     #0f1f4b !important;
+    --input-background-fill:     #1a2f6b !important;
+    --body-text-color:           #ffffff !important;
+    --body-text-color-subdued:   rgba(255,255,255,0.65) !important;
+    --border-color-primary:      rgba(255,255,255,0.25) !important;
+    --block-border-color:        rgba(255,255,255,0.25) !important;
+    --block-label-text-color:    #ffffff !important;
+    --block-title-text-color:    #ffffff !important;
+    --color-accent:              #9b59b6 !important;
+    --neutral-50:                #1a2f6b !important;
+    --neutral-100:               #0f1f4b !important;
+    --neutral-200:               #1a2f6b !important;
+    --neutral-300:               rgba(255,255,255,0.3) !important;
+    --neutral-400:               rgba(255,255,255,0.5) !important;
+    --neutral-600:               #cccccc !important;
+    --neutral-700:               #ffffff !important;
+    --neutral-800:               #ffffff !important;
+    --neutral-900:               #ffffff !important;
+}
+
+/* ── Base container ───────────────────────────────────────────────────── */
+.gradio-container,
+body,
+footer {
+    background-color: var(--disco-blue) !important;
+    color: #ffffff !important;
+}
+
+/* ── All blocks / panels / forms ──────────────────────────────────────── */
+.block, .form, .box,
+.gr-block, .gr-form, .gr-box,
+.wrap, .panel, .container,
+.prose,
+.gap, .flex {
+    background-color: var(--disco-blue) !important;
+    color: #ffffff !important;
+}
+
+/* ── Inputs: text / number ────────────────────────────────────────────── */
+input, textarea, select,
+input[type="text"], input[type="number"], input[type="email"] {
+    background-color: var(--disco-blue-mid) !important;
+    color: #ffffff !important;
+    border-color: rgba(255,255,255,0.25) !important;
+}
+input::placeholder, textarea::placeholder {
+    color: rgba(255,255,255,0.55) !important;
+}
+
+/* ── Slider ────────────────────────────────────────────────────────────── */
+input[type="range"] {
+    accent-color: #9b59b6 !important;
+    background: transparent !important;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+    background: rgba(255,255,255,0.3) !important;
+    height: 4px;
+}
+input[type="range"]::-moz-range-track {
+    background: rgba(255,255,255,0.3) !important;
+}
+input[type="range"]::-webkit-slider-thumb {
+    background: #9b59b6 !important;
+    border: 2px solid #ffffff !important;
+}
+
+/* ── Radio buttons ─────────────────────────────────────────────────────── */
+.radio-group, .gr-radio,
+fieldset, legend,
+.wrap.svelte-1p9xokt,
+span.svelte-1p9xokt,
+label.svelte-1p9xokt {
+    background-color: transparent !important;
+    color: #ffffff !important;
+}
+/* Radio item pill / selected state */
+.selected, [data-testid="radio-item"],
+input[type="radio"] + span,
+input[type="radio"] ~ span {
+    background-color: var(--disco-blue-mid) !important;
+    color: #ffffff !important;
+    border-color: rgba(255,255,255,0.35) !important;
+}
+
+/* ── Accordion ─────────────────────────────────────────────────────────── */
+details, summary,
+.accordion, .gr-accordion,
+button.gr-accordion-toggle {
+    background-color: var(--disco-blue-mid) !important;
+    color: #ffffff !important;
+    border-color: rgba(255,255,255,0.25) !important;
+}
+details[open] summary {
+    border-bottom-color: rgba(255,255,255,0.25) !important;
+}
+
+/* ── Labels / markdown ─────────────────────────────────────────────────── */
+label, .label-wrap, .block-label,
+p, span, h1, h2, h3, h4, small, em, strong {
+    color: #ffffff !important;
+    background-color: transparent !important;
+}
+
+/* ── Buttons (non-generate) ────────────────────────────────────────────── */
+button:not(#btn-generate) {
+    background-color: var(--disco-blue-mid) !important;
+    color: #ffffff !important;
+    border-color: rgba(255,255,255,0.25) !important;
+}
+
+/* ── Generate button ───────────────────────────────────────────────────── */
+#btn-generate, #btn-generate * {
+    background-color: #4B0082 !important;
+    color: #ffffff !important;
+    border: none !important;
+    font-size: 16px !important;
+}
+
+/* ── Top banner ────────────────────────────────────────────────────────── */
+#top-banner {
+    position: sticky; top: 0; z-index: 9999; width: 100%;
+    background: var(--disco-red) !important;
+    color: #ffffff !important;
+    text-align: center;
+    padding: 14px 16px;
+    font-weight: 700;
+    font-size: 24px;
+    letter-spacing: 1px;
+}
+
+/* ── Output image panels ───────────────────────────────────────────────── */
+.output-image, .image-container,
+[data-testid="image"] {
+    background-color: var(--disco-blue-mid) !important;
+}
+
+.label-col {
+    font-size: 18px;
+    font-weight: 700;
+    text-align: center;
+    color: #ffffff;
+}
+
+* { box-shadow: none !important; }

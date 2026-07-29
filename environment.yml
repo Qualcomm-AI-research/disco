@@ -1,0 +1,38 @@
+# Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
+# SPDX-License-Identifier: BSD-3-Clause-Clear
+#
+# CUDA 12.4 compatible environment (requires a CUDA 12.4 driver on the host).
+name: disco
+
+# Channel priority: pytorch and nvidia first (required for GPU-matched
+# PyTorch builds), then conda-forge (preferred over defaults for most
+# packages), then defaults as a last resort.
+channels:
+  - pytorch       # pytorch==2.6.0 + torchvision
+  - nvidia        # pytorch-cuda==12.4 CUDA runtime
+  - conda-forge   # general packages; higher priority than defaults
+  - defaults
+
+dependencies:
+  - python=3.11
+  - pytorch=2.6.0
+  - torchvision=0.21.0
+  - pytorch-cuda=12.4  # matches the CUDA 12.4 driver on target hosts
+  - pip             # ensure pip is present before the pip: block below
+  - pip:
+    - accelerate==1.4.0
+    - bitsandbytes==0.45.3
+    - diffusers==0.33.1
+    - einops==0.8.1
+    - gradio>=6.14.0,<6.15.0
+    - httptools>=0.7.1,<0.8.0
+    - uvloop>=0.22.1,<0.23.0
+    - numpy==1.26.4
+    - peft==0.10.0
+    - pillow==10.4.0
+    - protobuf
+    - sentencepiece
+    - tokenizers==0.19.1
+    - tqdm==4.67.1
+    - transformers==4.40.0
+    - xformers==0.0.29.post1  # built for torch 2.6.0 + CUDA 12.x
