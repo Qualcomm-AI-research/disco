@@ -40,7 +40,7 @@ logger.addHandler(logging.NullHandler())
 __all__ = ["load_pipeline", "apply_lora", "generate", "main"]
 
 DEFAULT_MODEL = os.getenv("DISCO_MODEL", "black-forest-labs/FLUX.1-dev")
-DEFAULT_LORA = os.getenv("DISCO_LORA", "")
+DEFAULT_LORA = os.getenv("DISCO_LORA", "loras/disco")
 DEFAULT_PROMPT = (
     "A stunning close-up of Six people on a campus walkway, clear faces "
     "visible, fine detail, lifelike rendering, diversity in ethnicity."

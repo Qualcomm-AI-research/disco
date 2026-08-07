@@ -68,7 +68,7 @@ logger.addHandler(logging.NullHandler())
 # ---------------------------------------------------------------------------
 
 DEFAULT_MODEL = os.getenv("DISCO_MODEL", "black-forest-labs/FLUX.1-dev")
-DEFAULT_LORA = os.getenv("DISCO_LORA", "")
+DEFAULT_LORA = os.getenv("DISCO_LORA", "loras/disco")
 
 __all__ = ["generate", "build_ui"]
 

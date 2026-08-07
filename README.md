@@ -32,8 +32,22 @@ The DisCO model is a LoRA adapter applied on top of [FLUX.1-dev](https://hugging
 ├── test_prompts.jsonl    # Sample prompts for batch evaluation (one JSON object per line)
 ├── environment.yml       # Conda environment specification (Python 3.11, CUDA 12.4)
 ├── Dockerfile            # Docker image definition for containerised deployment
+├── loras/
+│   └── disco/
+│       ├── adapter_config.json   ← in repo
+│       └── adapter_model.safetensors   ← download from release
 └── README.md
 ```
+
+---
+
+## Model Weights
+
+The DisCO LoRA adapter weights are distributed as a GitHub release asset.
+
+**Download from:** [GitHub Releases](https://github.com/Qualcomm-AI-research/disco/releases)
+
+After downloading, place the weights at `loras/disco/adapter_model.safetensors`. The inference code defaults to `loras/disco/` automatically. Override via the `DISCO_LORA` environment variable if placing weights elsewhere.
 
 ---
 
@@ -101,17 +115,17 @@ python app.py
 python inference.py --prompt "Two people on a beach" --no-lora
 
 # DisCO with LoRA
-python inference.py --prompt "Two people on a beach" --lora-path /path/to/lora
+python inference.py --prompt "Two people on a beach"
 
 # Side-by-side comparison
-python inference.py --prompt "Two people on a beach" --lora-path /path/to/lora --compare
+python inference.py --prompt "Two people on a beach" --compare
 ```
 
 Expected output (example for `--compare`):
 
 ```
 INFO Loading Flux-Dev from: black-forest-labs/FLUX.1-dev
-INFO Loading LoRA from: /path/to/lora
+INFO Loading LoRA from: loras/disco
 INFO LoRA merged into model weights
 INFO Saved base  -> outputs/base_42.png
 INFO Saved DisCO -> outputs/disco_42.png
@@ -126,7 +140,7 @@ A set of sample prompts is provided in `test_prompts.jsonl` (one prompt per line
 ```bash
 while IFS= read -r line; do
     prompt=$(echo "$line" | python -c "import sys,json; print(json.load(sys.stdin)['prompt'])")
-    python inference.py --prompt "$prompt" --lora-path /path/to/lora --compare
+    python inference.py --prompt "$prompt" --compare
 done < test_prompts.jsonl
 ```
 
@@ -142,7 +156,7 @@ python app.py
 | Variable | Description | Default |
 |---|---|---|
 | `DISCO_MODEL` | Path or HF repo for base Flux model | `black-forest-labs/FLUX.1-dev` |
-| `DISCO_LORA` | Path to a DisCO LoRA adapter | `""` (unset) |
+| `DISCO_LORA` | Path to a DisCO LoRA adapter | `loras/disco` |
 | `HF_HOME` | Hugging Face cache directory | HF default |
 
 ---
@@ -167,4 +181,4 @@ python app.py
 This project is released under the [BSD 3-Clause Clear License](https://spdx.org/licenses/BSD-3-Clause-Clear.html).
 © 2025 Qualcomm Technologies, Inc. and/or its subsidiaries.
 
-> **Disclaimer:** The base model [FLUX.1-dev](https://huggingface.co/black-forest-labs/FLUX.1-dev) is released under a [Non-commercial License](https://huggingface.co/black-forest-labs/FLUX.1-dev/blob/main/LICENSE.md). Consequently, the DisCO LoRA weights are derived from FLUX.1-dev and are therefore also subject to those Non-commercial License restrictions. Any use of the DisCO LoRA weights must comply with the FLUX.1-dev Non-commercial License terms.
+> **Disclaimer:** The base model [FLUX.1-dev](https://huggingface.co/black-forest-labs/FLUX.1-dev) is released under a [Non-commercial License](https://huggingface.co/black-forest-labs/FLUX.1-dev/blob/main/LICENSE.md). Consequently, the DisCO LoRA weights are derived from FLUX.1-dev and are therefore also subject to those Non-commercial License restrictions. Any use of the DisCO LoRA weights must comply with the FLUX.1-dev Non-commercial License terms. The full license text is available in [LICENSE-FLUX1-dev.txt](LICENSE-FLUX1-dev.txt).

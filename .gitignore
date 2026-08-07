@@ -5,3 +5,5 @@ outputs/
 __pycache__/
 *.pyc
 .claude/
+# Model weights (download from GitHub releases)
+loras/**/*.safetensors
