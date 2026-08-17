@@ -8,6 +8,10 @@ Inference and demo code for **DisCO**: a reinforcement learning approach that fi
 
 ---
 
+[![arXiv](https://img.shields.io/badge/arXiv-2510.01399-b31b1b.svg)](https://arxiv.org/abs/2510.01399)
+[![Project Page](https://img.shields.io/badge/Project-Page-blue)](https://qualcomm-ai-research.github.io/disco/)
+[![HuggingFace](https://img.shields.io/badge/🤗%20HuggingFace-Model-yellow)](https://huggingface.co/Qualcomm-AI-Research/disco)
+
 ## Abstract
 
 > Text-to-image models tend to generate duplicate faces, merge identities, or miscount people in multi-human scenes. DisCO addresses this by fine-tuning flow-matching models via reinforcement learning to optimize facial diversity both within individual images and across sample batches. The method employs a composite reward function that addresses facial similarity penalties, deters identity repetition, ensures accurate person counting, and preserves image quality. Testing on our evaluation benchmark demonstrates superior performance, achieving approximately 98.6% unique-face accuracy while also outperforming both open-source and proprietary competitors. Notably, the approach requires no external training data, making it a scalable solution for generating images containing multiple distinct individuals.
