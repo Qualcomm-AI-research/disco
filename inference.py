@@ -95,7 +95,7 @@ def apply_lora(pipe: FluxPipeline, lora_path: str) -> FluxPipeline:
             exist on disk.
         RuntimeError: If the ``peft`` package is not installed.
     """
-    if lora_path and Path(lora_path).is_dir():
+    if lora_path and (Path(lora_path) / "adapter_model.safetensors").is_file():
         logger.info("Loading DisCO LoRA from local path: %s", lora_path)
     else:
         logger.info(

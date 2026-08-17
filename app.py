@@ -177,7 +177,7 @@ def _load_disco(lora_path: str) -> FluxPipeline:
             raise RuntimeError("peft is not installed; cannot load LoRA")
 
         lora_path = lora_path.strip()
-        if Path(lora_path).is_dir():
+        if (Path(lora_path) / "adapter_model.safetensors").is_file():
             logger.info("Loading DisCO LoRA from local path: %s", lora_path)
         else:
             logger.info(
