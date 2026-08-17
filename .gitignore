@@ -5,3 +5,9 @@ outputs/
 __pycache__/
 *.pyc
 .claude/
+# Model weights (download from GitHub releases)
+loras/**/*.safetensors
+# NFS temp files
+.nfs*
+# HuggingFace release folder (contains large weights)
+hf_release/

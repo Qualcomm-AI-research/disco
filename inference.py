@@ -40,7 +40,8 @@ logger.addHandler(logging.NullHandler())
 __all__ = ["load_pipeline", "apply_lora", "generate", "main"]
 
 DEFAULT_MODEL = os.getenv("DISCO_MODEL", "black-forest-labs/FLUX.1-dev")
-DEFAULT_LORA = os.getenv("DISCO_LORA", "")
+DEFAULT_LORA = os.getenv("DISCO_LORA", "loras/disco")
+HF_LORA_ID = os.getenv("DISCO_LORA_HF", "Qualcomm-AI-Research/disco")
 DEFAULT_PROMPT = (
     "A stunning close-up of Six people on a campus walkway, clear faces "
     "visible, fine detail, lifelike rendering, diversity in ethnicity."
@@ -94,10 +95,15 @@ def apply_lora(pipe: FluxPipeline, lora_path: str) -> FluxPipeline:
             exist on disk.
         RuntimeError: If the ``peft`` package is not installed.
     """
-    if not lora_path or not Path(lora_path).exists():
-        raise ValueError(
-            f"lora_path must be a valid directory; got: {lora_path!r}"
+    if lora_path and Path(lora_path).is_dir():
+        logger.info("Loading DisCO LoRA from local path: %s", lora_path)
+    else:
+        logger.info(
+            "Local LoRA not found at %r — loading from HuggingFace: %s",
+            lora_path,
+            HF_LORA_ID,
         )
+        lora_path = HF_LORA_ID
     if not PEFT_AVAILABLE:
         raise RuntimeError("peft is not installed; cannot load LoRA")
     logger.info("Loading LoRA from: %s", lora_path)

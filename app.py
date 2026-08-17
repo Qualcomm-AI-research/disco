@@ -68,7 +68,8 @@ logger.addHandler(logging.NullHandler())
 # ---------------------------------------------------------------------------
 
 DEFAULT_MODEL = os.getenv("DISCO_MODEL", "black-forest-labs/FLUX.1-dev")
-DEFAULT_LORA = os.getenv("DISCO_LORA", "")
+DEFAULT_LORA = os.getenv("DISCO_LORA", "loras/disco")
+HF_LORA_ID = os.getenv("DISCO_LORA_HF", "Qualcomm-AI-Research/disco")
 
 __all__ = ["generate", "build_ui"]
 
@@ -176,10 +177,15 @@ def _load_disco(lora_path: str) -> FluxPipeline:
             raise RuntimeError("peft is not installed; cannot load LoRA")
 
         lora_path = lora_path.strip()
-        if not Path(lora_path).is_dir():
-            raise ValueError(
-                f"LoRA path must be an existing directory: {lora_path}"
+        if Path(lora_path).is_dir():
+            logger.info("Loading DisCO LoRA from local path: %s", lora_path)
+        else:
+            logger.info(
+                "Local LoRA not found at %s — loading from HuggingFace: %s",
+                lora_path,
+                HF_LORA_ID,
             )
+            lora_path = HF_LORA_ID
 
         # Build a fresh pipeline for DisCO and merge LoRA into weights
         logger.info("Loading DisCO pipeline + LoRA from: %s", lora_path)

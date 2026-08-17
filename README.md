@@ -1,14 +1,18 @@
-# DisCO Inference
+# Resolving the Identity Crisis in Text-to-Image Generation
 
 Inference and demo code for **DisCO**: a reinforcement learning approach that fine-tunes flow-matching models to generate images with diverse, distinct faces in multi-human scenes.
 
 **Paper:** [Resolving the Identity Crisis in Text-to-Image Generation](https://arxiv.org/abs/2510.01399) @ CVPR 2026
+
+![DisCO results](assets/disco_main.jpg)
 
 ---
 
 ## Abstract
 
 > Text-to-image models tend to generate duplicate faces, merge identities, or miscount people in multi-human scenes. DisCO addresses this by fine-tuning flow-matching models via reinforcement learning to optimize facial diversity both within individual images and across sample batches. The method employs a composite reward function that addresses facial similarity penalties, deters identity repetition, ensures accurate person counting, and preserves image quality. Testing on our evaluation benchmark demonstrates superior performance, achieving approximately 98.6% unique-face accuracy while also outperforming both open-source and proprietary competitors. Notably, the approach requires no external training data, making it a scalable solution for generating images containing multiple distinct individuals.
+
+![DisCO scoresheet](assets/disco_scoresheet.jpg)
 
 ---
 
@@ -32,8 +36,24 @@ The DisCO model is a LoRA adapter applied on top of [FLUX.1-dev](https://hugging
 ├── test_prompts.jsonl    # Sample prompts for batch evaluation (one JSON object per line)
 ├── environment.yml       # Conda environment specification (Python 3.11, CUDA 12.4)
 ├── Dockerfile            # Docker image definition for containerised deployment
+├── loras/
+│   └── disco/
+│       ├── adapter_config.json   ← in repo
+│       └── adapter_model.safetensors   ← download from release
 └── README.md
 ```
+
+---
+
+## Model Weights
+
+The DisCO LoRA adapter weights can be obtained in two ways:
+
+**Option A: HuggingFace (automatic):** If `loras/disco/` does not contain a local checkpoint, the code automatically downloads the adapter from HuggingFace (`Qualcomm-AI-Research/disco`) at first run. No extra steps required.
+
+**Option B: GitHub Release (manual):** Download `adapter_model.safetensors` from [GitHub Releases](https://github.com/Qualcomm-AI-research/disco/releases) and place it at `loras/disco/adapter_model.safetensors`. The inference code will then use the local copy.
+
+Override the local path via the `DISCO_LORA` environment variable, or override the HuggingFace repo ID via `DISCO_LORA_HF`.
 
 ---
 
@@ -101,17 +121,17 @@ python app.py
 python inference.py --prompt "Two people on a beach" --no-lora
 
 # DisCO with LoRA
-python inference.py --prompt "Two people on a beach" --lora-path /path/to/lora
+python inference.py --prompt "Two people on a beach"
 
 # Side-by-side comparison
-python inference.py --prompt "Two people on a beach" --lora-path /path/to/lora --compare
+python inference.py --prompt "Two people on a beach" --compare
 ```
 
 Expected output (example for `--compare`):
 
 ```
 INFO Loading Flux-Dev from: black-forest-labs/FLUX.1-dev
-INFO Loading LoRA from: /path/to/lora
+INFO Local LoRA not found at 'loras/disco' — loading from HuggingFace: Qualcomm-AI-Research/disco
 INFO LoRA merged into model weights
 INFO Saved base  -> outputs/base_42.png
 INFO Saved DisCO -> outputs/disco_42.png
@@ -126,7 +146,7 @@ A set of sample prompts is provided in `test_prompts.jsonl` (one prompt per line
 ```bash
 while IFS= read -r line; do
     prompt=$(echo "$line" | python -c "import sys,json; print(json.load(sys.stdin)['prompt'])")
-    python inference.py --prompt "$prompt" --lora-path /path/to/lora --compare
+    python inference.py --prompt "$prompt" --compare
 done < test_prompts.jsonl
 ```
 
@@ -142,7 +162,8 @@ python app.py
 | Variable | Description | Default |
 |---|---|---|
 | `DISCO_MODEL` | Path or HF repo for base Flux model | `black-forest-labs/FLUX.1-dev` |
-| `DISCO_LORA` | Path to a DisCO LoRA adapter | `""` (unset) |
+| `DISCO_LORA` | Local path to a DisCO LoRA adapter directory | `loras/disco` |
+| `DISCO_LORA_HF` | HuggingFace repo ID used when local path is absent | `Qualcomm-AI-Research/disco` |
 | `HF_HOME` | Hugging Face cache directory | HF default |
 
 ---
@@ -167,4 +188,4 @@ python app.py
 This project is released under the [BSD 3-Clause Clear License](https://spdx.org/licenses/BSD-3-Clause-Clear.html).
 © 2025 Qualcomm Technologies, Inc. and/or its subsidiaries.
 
-> **Disclaimer:** The base model [FLUX.1-dev](https://huggingface.co/black-forest-labs/FLUX.1-dev) is released under a [Non-commercial License](https://huggingface.co/black-forest-labs/FLUX.1-dev/blob/main/LICENSE.md). Consequently, the DisCO LoRA weights are derived from FLUX.1-dev and are therefore also subject to those Non-commercial License restrictions. Any use of the DisCO LoRA weights must comply with the FLUX.1-dev Non-commercial License terms.
+> **Disclaimer:** The base model [FLUX.1-dev](https://huggingface.co/black-forest-labs/FLUX.1-dev) is released under a [Non-commercial License](https://huggingface.co/black-forest-labs/FLUX.1-dev/blob/main/LICENSE.md). Consequently, the DisCO LoRA weights are derived from FLUX.1-dev and are therefore also subject to those Non-commercial License restrictions. Any use of the DisCO LoRA weights must comply with the FLUX.1-dev Non-commercial License terms. The full license text is available in [LICENSE-FLUX1-dev.txt](LICENSE-FLUX1-dev.txt).
