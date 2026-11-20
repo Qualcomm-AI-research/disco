@@ -92,6 +92,9 @@ conda activate disco
 docker build -t disco-inference .
 ```
 
+The container runs as `appuser`, with UID and GID `1000` by default. The
+`APP_UID` and `APP_GID` build arguments let you match host ownership for bind mounts.
+
 **Run (no mounts — models pulled from Hugging Face at runtime):**
 
 Build the `disco-inference` image locally before running this command.

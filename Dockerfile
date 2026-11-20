@@ -29,7 +29,20 @@ RUN pip install --no-cache-dir \
     protobuf \
     sentencepiece
 
-COPY . .
+# Match host ownership when mounting model caches; runtime IDs must be non-root.
+ARG APP_UID=1000
+ARG APP_GID=1000
+RUN test "${APP_UID}" -gt 0 && test "${APP_GID}" -gt 0 \
+    && groupadd --gid "${APP_GID}" --non-unique appuser \
+    && useradd --uid "${APP_UID}" --gid appuser --no-log-init \
+        --create-home --home-dir /home/appuser --shell /bin/bash appuser \
+    && chown appuser:appuser /app
+
+ENV HF_HOME=/home/appuser/.cache/huggingface
+ENV TORCH_HOME=/home/appuser/.cache/torch
+
+COPY --chown=appuser:appuser . .
 
 RUN chmod -R 755 /app
 
+USER appuser
