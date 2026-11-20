@@ -94,8 +94,12 @@ docker build -t disco-inference .
 
 **Run (no mounts — models pulled from Hugging Face at runtime):**
 
+Build the `disco-inference` image locally before running this command.
+`--pull=never` makes a missing local image produce an error. If you see that error,
+run `docker build -t disco-inference .` first.
+
 ```bash
-docker run -it --rm --gpus all -p 7864:7864 disco-inference
+docker run --pull=never -it --rm --gpus all -p 7864:7864 disco-inference
 ```
 
 > **Note:** `--gpus all` requires [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html) to be installed on the host. Without it, the container will not see the GPU.
